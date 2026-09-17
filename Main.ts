@@ -3,20 +3,14 @@ import { Equipamento } from "./class/Equipamento.ts";
 import prompt from "prompt-sync"
 
 const teclado = prompt()
-
 teclado("Pressione alguma tecla para continuar...")
 
-
 const equipamento: Equipamento = new Equipamento("ferramentas", "uteis", 0)
-
 const sherman: Tanque = new Tanque("M4", "Medio", equipamento);
-
-
 
 //console.table(sherman.map(p=>({modelo:p.modelo , classe:p.classe})));
 //console.table(sherman);
 //console.table(equipamento);
-
 
 let escolha
 do {
@@ -25,52 +19,54 @@ do {
     console.log("2.reparar")
     console.log("3.Status")
     console.log("4.Atacar")
-    escolha=+teclado("\n\nEscolha uma opção: ")
+    console.log("5.Sair")
 
-    
+    escolha = +teclado("\n\nEscolha uma opção: ")
+
     switch (escolha) {
 
-    case 1: //carregar canhao
-        try{
-            sherman.carregarMunicao();
-        }catch(e){
-            console.log((e as Error).message);            
-        }
-    break;
-        
-    case 2:  //reparar
-        try{
-            sherman.repararTanque();
-        }catch(e){
-            console.log((e as Error).message);
-        }
-    break;
+        case 1: //carregar canhao
+            try {
+                sherman.carregarMunicao();
+            } catch (e) {
+                console.log((e as Error).message);
+            }
+            break;
 
-    case 3:  //status
-        try{
-            console.table(sherman);
-        }catch(e){
-            console.log((e as Error).message);
-        }
-        
-    break;
+        case 2:  //reparar
+            try {
+                sherman.repararTanque();
+            } catch (e) {
+                console.log((e as Error).message);
+            }
+            break;
 
-    case 4: //atacar
-        try{
-            sherman.atacar()
-            console.log("BOOOOOMMMMMMMMM!!!!!!!!!!!!!")
-        }catch(e){
-            console.log((e as Error).message);
-        }
-        
-        
-    default:
-    break;
+        case 3:  //status
+            try {
+                console.table(sherman);
+            } catch (e) {
+                console.log((e as Error).message);
+            }
+            break;
 
+        case 4: //atacar
+            try {
+                sherman.atacar()
+                console.log("BOOOOOMMMMMMMMM!!!!!!!!!!!!!")
+            } catch (e) {
+                console.log((e as Error).message);
+            }
+            break;
+
+        case 5: //sair
+            console.log("\nSaindo do jogo...")
+            break;
+
+        default:
+            console.log("\nOpção inválida!")
+            break;
     }
-
-    
-} while (escolha < 9);
+} while (escolha !== 5);
 
 
 

@@ -14,7 +14,13 @@
     "typescript": "^7.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^8.0.5",
+    "@babel/preset-env": "^8.0.5",
+    "@babel/preset-typescript": "^8.0.1",
+    "@jest/globals": "^30.5.1",
     "@types/prompt-sync": "^4.2.3",
+    "babel-jest": "^30.5.1",
+    "jest": "^30.5.1",
     "prompt-sync": "^4.2.0"
   }
 }
