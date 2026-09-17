@@ -1,4 +1,4 @@
-import { Tanque } from "./class/Personagem.ts";
+import { Tanque } from "./class/Tanque.ts";
 import { Equipamento } from "./class/Equipamento.ts";
 import prompt from "prompt-sync"
 

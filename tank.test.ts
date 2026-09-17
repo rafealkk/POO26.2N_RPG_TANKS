@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import { Tanque } from "./class/Personagem.ts";
+import { Tanque } from "./class/Tanque.ts";
 import { Equipamento } from "./class/Equipamento.ts";
 
 describe("Quando manipular Tanque", () => {
