@@ -3,7 +3,7 @@ import { Equipamento } from "./class/Equipamento.ts";
 import prompt from "prompt-sync"
 
 const teclado = prompt()
-teclado("Pressione alguma tecla para continuar...")
+teclado("Bem-vindo ao Tank kombat\n\nPressione alguma tecla para Iniciar")
 
 const equipamento: Equipamento = new Equipamento("ferramentas", "uteis", 0)
 const sherman: Tanque = new Tanque("M4", "Medio", equipamento);
@@ -15,19 +15,20 @@ const sherman: Tanque = new Tanque("M4", "Medio", equipamento);
 let escolha
 do {
     console.log("\n\n\nTa ta-ra -raaaaaaaaaaaaaaaaa!!!!\n\n")
-    console.log("1.carregar canhao")
-    console.log("2.reparar")
+    console.log("1.Carregar Canhão")
+    console.log("2.Reparar")
     console.log("3.Status")
     console.log("4.Atacar")
-    console.log("5.Sair")
+    console.log("\n99.Sair")
 
-    escolha = +teclado("\n\nEscolha uma opção: ")
+    escolha = +teclado("Escolha uma opção: ")
 
     switch (escolha) {
 
         case 1: //carregar canhao
             try {
                 sherman.carregarMunicao();
+                console.log("\n\n\n\n\nBala Neles!!!")
             } catch (e) {
                 console.log((e as Error).message);
             }
@@ -58,7 +59,7 @@ do {
             }
             break;
 
-        case 5: //sair
+        case 99: //sair
             console.log("\nSaindo do jogo...")
             break;
 
@@ -66,7 +67,7 @@ do {
             console.log("\nOpção inválida!")
             break;
     }
-} while (escolha !== 5);
+} while (escolha !== 99);
 
 
 

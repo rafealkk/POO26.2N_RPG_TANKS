@@ -41,7 +41,7 @@ carregarMunicao(): void {
 }
 
 repararTanque(): void{
-    if (this.vida<100 && this.vida > 50 && this.reparo > 0){
+    if (this.vida<100 && this.vida > 30 && this.reparo > 0){
         this.vida = 100;
         this.reparo -= 1
     }else if (this.vida <= 50 && this.reparo > 0){

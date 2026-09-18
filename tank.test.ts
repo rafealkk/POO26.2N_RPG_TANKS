@@ -34,11 +34,11 @@ describe("Quando manipular Tanque", () => {
             "Medio",
             equipamento
         );
-        tanque.vida = 40;
+        tanque.vida = 50;
         // Execução
         tanque.repararTanque();
         // Validar
-        expect(tanque.vida).toBe(90);
+        expect(tanque.vida).toBe(100);
         expect(tanque.reparo).toBe(0);
     });
 
