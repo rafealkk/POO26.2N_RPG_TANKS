@@ -1,0 +1,30 @@
+#nota do timm: tudo que eu terminei com "???" no final, gostaria da opinião de vcs
+
+
+### O que precisamos construir?
+
+- Seletor de Tanques
+    - um tanque Overall
+    - um tanque Rápido
+    - um tanque pesado
+    
+- Fases com inimigos
+    - 10 turnos (fácil, médio, difícil e boss)
+        - o balanceamento se dará pelos equipamentos ???
+    - inimigos leves
+    - inimigos medios 
+    - inimigos pesados
+
+- Seletor automático de inimigos
+    
+- Tipos de equipamentos e oq eles fazem
+    - Crítico
+    - Resistência
+    - Maior capacidade de munição
+    - editor de dano
+    - mais combustível
+
+- Jogabilidade  
+    - Selecionar equipamentos a cada fim de turno para aprimorar o tanque
+    - Gasta combustível para realizar ações
+    - Ganha "ouro" ao fim do turno para comprar equipamentos e usáveis ???
