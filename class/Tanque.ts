@@ -1,162 +1,103 @@
 import { Equipamento } from "./Equipamento.ts";
 
-//classe
 export class Tanque {
-    //campos/atributos
     private _modelo: string;
     private _classe: string;
     private _vida: number;
-    private _culatra: number;
+    private _vidaMaxima: number;
+    private _culatra = 0;
     private _equipamento: Equipamento;
     private _municao: number;
     private _reparo: number;
     private _ataque: number;
     private _chanceAcerto: number;
+    private _combustivel = 100;
+    private _emMovimento = false;
 
-
-
-    constructor(modelo: string, classe: string, equipamento: Equipamento) {
+    constructor(modelo: string, _classe: string, equipamento: Equipamento) {
         this._modelo = modelo;
-        this._classe = classe;
-        this._vida = 25;
-        this._culatra = 0;
         this._equipamento = equipamento;
-        this._municao = 1;
-        this._reparo = 1;
-        this._ataque = 30;
-        this._chanceAcerto = 10;
-
-        this.configurarModelo();
-
+        const modelos: Record<string, { classe: string; vida: number; municao: number; reparo: number; ataque: number; chance: number }> = {
+            "M4 Sherman": { classe: "Médio", vida: 80, municao: 20, reparo: 3, ataque: 40, chance: 90 },
+            "Tiger I": { classe: "Pesado", vida: 120, municao: 20, reparo: 2, ataque: 70, chance: 80 },
+            "T-34": { classe: "Médio", vida: 90, municao: 20, reparo: 4, ataque: 60, chance: 70 }
+        };
+        const dados = modelos[modelo];
+        if (!dados) throw new Error(`Modelo de tanque inválido: ${modelo}`);
+        this._classe = dados.classe;
+        this._vida = dados.vida;
+        this._vidaMaxima = dados.vida;
+        this._municao = dados.municao;
+        this._reparo = dados.reparo;
+        this._ataque = dados.ataque;
+        this._chanceAcerto = dados.chance;
     }
 
-    private configurarModelo(): void {
+    public get modelo(): string { return this._modelo; }
+    public get classe(): string { return this._classe; }
+    public get vida(): number { return this._vida; }
+    public get vidaMaxima(): number { return this._vidaMaxima; }
+    public get culatra(): number { return this._culatra; }
+    public get equipamento(): Equipamento { return this._equipamento; }
+    public get municao(): number { return this._municao; }
+    public get reparo(): number { return this._reparo; }
+    public get ataque(): number { return this._ataque; }
+    public get chanceAcerto(): number { return this._chanceAcerto; }
+    public get combustivel(): number { return this._combustivel; }
+    public get emMovimento(): boolean { return this._emMovimento; }
 
-        switch (this._modelo) {
-
-            case "M4 Sherman":
-                this._classe = "Médio";
-                this._vida = 80;
-                this._municao = 8;
-                this._reparo = 3;
-                this._ataque = 30;
-                this._chanceAcerto = 70;
-                break;
-
-            case "Tiger I":
-                this._classe = "Pesado";
-                this._vida = 100;
-                this._municao = 5;
-                this._reparo = 2;
-                this._ataque = 50;
-                this._chanceAcerto = 60;
-                break;
-
-            case "T-34":
-                this._classe = "Médio";
-                this._vida = 90;
-                this._municao = 10;
-                this._reparo = 4;
-                this._ataque = 35;
-                this._chanceAcerto = 80;
-                break;
-
-            default:
-                throw new Error("Modelo de tanque inválido!");
-        }
+    public consumirCombustivel(valor: number): void {
+        if (!Number.isFinite(valor) || valor < 0) throw new Error("Custo de combustível inválido.");
+        if (this._combustivel < valor) throw new Error(`Combustível insuficiente! Disponível: ${this._combustivel}. Necessário: ${valor}.`);
+        this._combustivel -= valor;
     }
 
-
-
-    
-
-    // getters e setters
-    public get vida(): number {
-        return this._vida;
+    public iniciarTurno(): void {
+        this._combustivel = 100;
+        this._emMovimento = false;
     }
 
-    public set vida(vida: number) {
-        if (this._vida <= 0) {
-            throw new Error("Seu Tanque está destruído? \nNão é possível ter essa vida");
-        }
-        if (this._vida <= 100) {
-            this._vida = vida;
-        } else {
-            throw new Error("Impossível ser melhor que isso \nNão é possível a vida ser maior que 100");
-        }
+    public movimentar(): void {
+        if (!this.estaVivo()) throw new Error("Tanque destruído não pode se movimentar.");
+        if (this._emMovimento) throw new Error("O tanque já se movimentou neste turno.");
+        this.consumirCombustivel(70);
+        this._emMovimento = true;
     }
 
-    public get municao(): number {
-        return this._municao;
-    }
-
-    public set municao(municao: number) {
-        if (this._municao < 0) {
-            throw new Error("Não é possível ter munição negativa");
-        }
-        if (this._municao <= 30) {
-            this._municao = municao;
-        } else {
-            throw new Error("Isso que é prevenção, hein!? \nSem espaço para munição");
-        }
-    }
-
-    public get reparo(): number {
-        return this._reparo
-    }
-
-    public set reparo(reparo: number) {
-        if (this._reparo < 0) {
-            throw new Error("Não é possível dever reparos");
-        }
-        if (this._reparo <= 10) {
-            this._reparo = reparo;
-        } else {
-            throw new Error("Tudo isso é medo? Não é possível ter tantos reparos");
-        }
-    }
-
-    public get ataque(): number {
-        return this._ataque
-    }
-
-    public set ataque(ataque: number) {
-        this._ataque = ataque
-    }
-
-    //métodos
     public carregarMunicao(): void {
-        if (this._culatra === 0 && this._municao > 0) {
-            this._culatra += 1
-            this.municao -= 1
-        } else if (this._culatra > 0) {
-            throw new Error("Canhao já está carregado Bisonho!")
-        } else {
-            throw new Error("Não temos mais muniçao!!! Recuar!!!!")
-        }
-
+        if (!this.estaVivo()) throw new Error("Tanque destruído não pode carregar.");
+        if (this._culatra !== 0) throw new Error("Canhão já está carregado!");
+        if (this._municao <= 0) throw new Error("Sem munição de reserva!");
+        this.consumirCombustivel(30);
+        this._culatra = 1;
+        this._municao--;
     }
 
-    public repararTanque(): void {
-        if (this.vida < 100 && this.vida > 30 && this.reparo > 0) {
-            this.vida = 100;
-            this.reparo -= 1
-        } else if (this.vida <= 50 && this.reparo > 0) {
-            this.vida += 50;
-            this.reparo -= 1
-        } else {
-            throw new Error("Não temos mais como reparar essa desgraça comandante.")
-        }
+    public repararTanque(): number {
+        if (!this.estaVivo()) throw new Error("Tanque destruído não pode ser reparado durante a batalha.");
+        if (this._reparo <= 0) throw new Error("Não restam kits de reparo!");
+        if (this._vida >= this._vidaMaxima) throw new Error("O tanque já está com a vida máxima!");
+        this.consumirCombustivel(50);
+        const recuperado = Math.min(50, this._vidaMaxima - this._vida);
+        this._vida += recuperado;
+        this._reparo--;
+        return recuperado;
     }
 
-    public atacar(): void {
-        if (this._culatra === 1) {
-            this._culatra -= 1
-            this._ataque = 1 + Math.floor(Math.random() * 20);
-        } else {
-            throw new Error("Sem munição na culatra")
-        }
+    // Consome um disparo e retorna o dano potencial, sem decidir se acertou.
+    public atacar(): number {
+        if (!this.estaVivo()) throw new Error("Tanque destruído não pode atacar.");
+        if (this._culatra !== 1) throw new Error("Sem munição na culatra!");
+        this.consumirCombustivel(30);
+        this._culatra = 0;
+        const variacao = 0.8 + Math.random() * 0.4;
+        return Math.max(1, Math.round((this._ataque + this._equipamento.bonus) * variacao));
     }
 
+    public receberDano(dano: number): void {
+        if (!Number.isFinite(dano) || dano < 0) throw new Error("Dano inválido.");
+        this._vida = Math.max(0, this._vida - dano);
+    }
 
+    public estaVivo(): boolean { return this._vida > 0; }
 }

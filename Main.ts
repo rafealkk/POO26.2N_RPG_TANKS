@@ -1,151 +1,75 @@
 import { Tanque } from "./class/Tanque.ts";
 import { Equipamento } from "./class/Equipamento.ts";
-import prompt from "prompt-sync"
+import { Batalha } from "./class/Batalha.ts";
+import prompt from "prompt-sync";
 
-const teclado = prompt()
-teclado("Bem-vindo ao Tank kombat\n\nPressione alguma tecla para Iniciar")
-
+const teclado = prompt();
+const modelos = ["M4 Sherman", "Tiger I", "T-34"];
 
 console.clear();
-
-console.log(`
-=========================================
-             TANK KOMBAT
-=========================================
-
+console.log(String.raw`
+==========================================
+               TANK KOMBAT
+==========================================
              __.---.___
-        ___/__\\_O_/___\\___
-       /___\\__________/___\\
-       |===|\\________/|===|
+        ___/__\_O_/___\___
+       /___\__________/___\
+       |===|\________/|===|
 _______|===|__________|===|______
 
-    PREPARE-SE PARA A GUERRA!
+         PREPARE-SE PARA A GUERRA!
+==========================================`);
+teclado("\nPressione ENTER para iniciar...");
 
-=========================================
-`);
-
-let modelo = "";
-let escolhaTanque: number;
-
+let escolhaTanque = 0;
 do {
-    console.clear();
+    console.log("\n========== ESCOLHA SEU TANQUE ==========");
+    console.log("1. M4 Sherman | Médio | Vida 80  | Ataque 30 | Precisão 70%");
+    console.log("2. Tiger I    | Pesado| Vida 100 | Ataque 50 | Precisão 60%");
+    console.log("3. T-34       | Médio | Vida 90  | Ataque 35 | Precisão 80%");
+    escolhaTanque = Number(teclado("Escolha (1 a 3): "));
+    if (![1, 2, 3].includes(escolhaTanque)) console.log("Modelo inválido!");
+} while (![1, 2, 3].includes(escolhaTanque));
 
-    console.log("================================");
-    console.log("       ESCOLHA SEU TANQUE");
-    console.log("================================");
+const equipamentoJogador = new Equipamento("Ferramentas", "Úteis", 0);
+const tanqueJogador = new Tanque(modelos[escolhaTanque - 1]!, "", equipamentoJogador);
+const modelosInimigos = modelos.filter(m => m !== tanqueJogador.modelo);
+const modeloInimigo = modelosInimigos[Math.floor(Math.random() * modelosInimigos.length)]!;
+const equipamentoInimigo = new Equipamento("Ferramentas", "Úteis", 0);
+const tanqueInimigo = new Tanque(modeloInimigo, "", equipamentoInimigo);
+const batalha = new Batalha(tanqueJogador, tanqueInimigo);
 
-    console.log("1 - M4 Sherman");
-    console.log("    Médio | Vida: 80 | Ataque: 30");
+console.log(`\nSeu tanque: ${tanqueJogador.modelo}`);
+console.log(`Inimigo detectado: ${tanqueInimigo.modelo}`);
+teclado("\nPressione ENTER para iniciar a batalha...");
 
-    console.log("2 - Tiger I");
-    console.log("    Pesado | Vida: 100 | Ataque: 50");
-
-    console.log("3 - T-34");
-    console.log("    Médio | Vida: 90 | Ataque: 35");
-
-    escolhaTanque = Number(teclado("\nEscolha: "));
-
-    switch (escolhaTanque) {
-        case 1:
-            modelo = "M4 Sherman";
-            break;
-
-        case 2:
-            modelo = "Tiger I";
-            break;
-
-        case 3:
-            modelo = "T-34";
-            break;
-
-        default:
-            console.log("\nOpção inválida!");
-            teclado("Pressione ENTER para tentar novamente...");
-    }
-
-} while (escolhaTanque < 1 || escolhaTanque > 3);
-
-const equipamento = new Equipamento("Ferramentas", "Úteis", 0);
-
-const tanqueJogador = new Tanque(modelo, "", equipamento);
-
-console.clear();
-
-console.log("================================");
-console.log("       TANQUE PREPARADO!");
-console.log("================================");
-
-console.table(tanqueJogador);
-
-teclado("\nPressione ENTER para entrar em combate...");
-
-
-
-/*
-const equipamento: Equipamento = new Equipamento("ferramentas", "uteis", 0)
-const sherman: Tanque = new Tanque("M4", "Medio", equipamento);
-*/
-//console.table(sherman.map(p=>({modelo:p.modelo , classe:p.classe})));
-//console.table(sherman);
-//console.table(equipamento);
-
-let escolha
+let escolha = 0;
 do {
-    console.log("\n\n\nTa ta-ra -raaaaaaaaaaaaaaaaa!!!!\n\n")
-    console.log("1.Carregar Canhão")
-    console.log("2.Reparar")
-    console.log("3.Status")
-    console.log("4.Atacar")
-    console.log("\n99.Sair")
-
-    escolha = +teclado("Escolha uma opção: ")
-
-    switch (escolha) {
-
-        case 1: //carregar canhao
-            try {
-                tanqueJogador.carregarMunicao();
-                console.log("\n\n\n\n\nBala Neles!!!")
-            } catch (e) {
-                console.log((e as Error).message);
-            }
-            break;
-
-        case 2:  //reparar
-            try {
-                tanqueJogador.repararTanque();
-            } catch (e) {
-                console.log((e as Error).message);
-            }
-            break;
-
-        case 3:  //status
-            try {
-                console.table(tanqueJogador);
-            } catch (e) {
-                console.log((e as Error).message);
-            }
-            break;
-
-        case 4: //atacar
-            try {
-                tanqueJogador.atacar()
-                console.log("BOOOOOMMMMMMMMM!!!!!!!!!!!!!")
-            } catch (e) {
-                console.log((e as Error).message);
-            }
-            break;
-
-        case 99: //sair
-            console.log("\nSaindo do jogo...")
-            break;
-
-        default:
-            console.log("\nOpção inválida!")
-            break;
+    batalha.mostrarStatus();
+    console.log("\n1. Carregar canhão (-30)");
+    console.log("2. Reparar tanque (-50)");
+    console.log("3. Consultar status (0)");
+    console.log("4. Atacar (-30)");
+    console.log("5. Movimentar (-70)");
+    console.log("6. Finalizar turno (inimigo joga)");
+    console.log("99. Sair");
+    escolha = Number(teclado("\nEscolha uma opção: "));
+    try {
+        switch (escolha) {
+            case 1: batalha.carregarJogador(); break;
+            case 2: batalha.repararJogador(); break;
+            case 3: batalha.mostrarStatus(); break;
+            case 4: batalha.atacarInimigo(); break;
+            //case 4: console.log(tanqueJogador.atacar()); break;
+            case 5: batalha.movimentarJogador(); break;
+            case 6: batalha.finalizarTurno(); break;
+            case 99: console.log("\nSaindo do jogo..."); break;
+            default: console.log("Opção inválida!");
+        }
+    } catch (erro) {
+        console.log(`\n${(erro as Error).message}`);
     }
-} while (escolha !== 99);
+} while (escolha !== 99 && batalha.batalhaAtiva());
 
-
-
-//Escolha nos Modelos de veículos; Classe; Equipamentos; Dano; Vida;
+if (!tanqueInimigo.estaVivo()) console.log("\nPARABÉNS, VOCÊ VENCEU!");
+else if (!tanqueJogador.estaVivo()) console.log("\nFIM DE JOGO!");
