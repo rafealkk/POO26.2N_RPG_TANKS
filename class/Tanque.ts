@@ -26,8 +26,49 @@ export class Tanque {
         this._ataque = 30;
         this._chanceAcerto = 10;
 
+        this.configurarModelo();
+
     }
 
+    private configurarModelo(): void {
+
+        switch (this._modelo) {
+
+            case "M4 Sherman":
+                this._classe = "Médio";
+                this._vida = 80;
+                this._municao = 8;
+                this._reparo = 3;
+                this._ataque = 30;
+                this._chanceAcerto = 70;
+                break;
+
+            case "Tiger I":
+                this._classe = "Pesado";
+                this._vida = 100;
+                this._municao = 5;
+                this._reparo = 2;
+                this._ataque = 50;
+                this._chanceAcerto = 60;
+                break;
+
+            case "T-34":
+                this._classe = "Médio";
+                this._vida = 90;
+                this._municao = 10;
+                this._reparo = 4;
+                this._ataque = 35;
+                this._chanceAcerto = 80;
+                break;
+
+            default:
+                throw new Error("Modelo de tanque inválido!");
+        }
+    }
+
+
+
+    
 
     // getters e setters
     public get vida(): number {
