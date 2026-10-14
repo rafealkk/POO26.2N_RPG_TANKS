@@ -62,7 +62,7 @@ do {
             case 4: batalha.atacarInimigo(); break;
             //case 4: console.log(tanqueJogador.atacar()); break;
             case 5: batalha.movimentarJogador(); break;
-            case 6: batalha.finalizarTurno(); break;
+            case 6: console.clear(); batalha.finalizarTurno(); break;
             case 99: console.log("\nSaindo do jogo..."); break;
             default: console.log("Opção inválida!");
         }

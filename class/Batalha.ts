@@ -17,11 +17,13 @@ export class Batalha {
     }
 
     public mostrarStatus(): void {
+        //console.clear();
         console.log(`\n========== TANK KOMBAT | TURNO ${this._turno} ==========`);
         for (const [nome, tanque] of [["JOGADOR", this._jogador], ["INIMIGO", this._inimigo]] as const) {
             console.log(`${nome}: ${tanque.modelo} (${tanque.classe})`);
             console.log(`Vida: ${tanque.vida}/${tanque.vidaMaxima} | Munição: ${tanque.municao} | Culatra: ${tanque.culatra ? "Carregada" : "Vazia"}`);
             console.log(`Combustível: ${tanque.combustivel}/100 | Reparos: ${tanque.reparo} | Movendo: ${tanque.emMovimento ? "Sim" : "Não"}`);
+            console.log("----------------------------------------");
         }
     }
 
