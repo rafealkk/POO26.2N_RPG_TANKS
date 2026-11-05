@@ -1,6 +1,6 @@
 import { Equipamento } from "./Equipamento.ts";
 
-export class Tanque {
+export abstract class Tanque {
     private _modelo: string;
     private _classe: string;
     private _vida: number;
@@ -18,6 +18,7 @@ export class Tanque {
         this._modelo = modelo;
         this._equipamento = equipamento;
         const modelos: Record<string, { classe: string; vida: number; municao: number; reparo: number; ataque: number; chance: number }> = {
+            "M2": { classe: "Leve", vida: 65, municao: 20, reparo: 4, ataque: 30, chance: 95 },
             "M4 Sherman": { classe: "Médio", vida: 80, municao: 20, reparo: 3, ataque: 40, chance: 90 },
             "Tiger I": { classe: "Pesado", vida: 120, municao: 20, reparo: 2, ataque: 70, chance: 80 },
             "T-34": { classe: "Médio", vida: 90, municao: 20, reparo: 4, ataque: 60, chance: 70 }

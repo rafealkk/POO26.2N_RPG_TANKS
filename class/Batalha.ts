@@ -56,8 +56,10 @@ export class Batalha {
         const chance = Math.max(0, Math.min(100, atacante.chanceAcerto - penalidadeMovimento - evasaoAlvo));
         console.log(`${atacante.modelo} dispara contra ${alvo.modelo}! (Chance: ${chance}%)`);
         if (Math.random() * 100 < chance) {
+            const vidaAnterior = alvo.vida;
             alvo.receberDano(dano);
-            console.log(`BOOOOM! Acertou e causou ${dano} de dano! Vida do alvo: ${alvo.vida}`);
+            const danoReal = vidaAnterior - alvo.vida;
+            console.log(`BOOOOM! Acertou e causou ${danoReal} de dano! Vida do alvo: ${alvo.vida}`);
         } else {
             console.log("O disparo ERROU o alvo!");
         }
